@@ -13,6 +13,7 @@ lightweight Python utility for converting files and office documents to Markdown
 - [Supported formats](#supported-formats)
 - [Installed dependencies](#installed-dependencies)
 - [Notes](#notes)
+- [Claude Code skill](#claude-code-skill)
 - [Credits](#credits)
 
 ---
@@ -240,6 +241,47 @@ conversion completes.
 
 When redirecting stdout to a file (`> output.md`), the output file is created by the host shell
 under your current user — no special handling is needed.
+
+---
+
+## Claude Code skill
+
+A [Claude Code](https://claude.ai/claude-code) skill is included so that AI agents can automatically
+invoke markitdown whenever they need to convert a supported document to Markdown — without any manual
+prompting.
+
+### What it does
+
+When Claude encounters a task that involves converting a file or URL to Markdown (e.g. "extract text
+from this PDF", "convert this Word document", "turn this into markdown"), it automatically loads the
+`convert-documents-to-markdown` skill and uses `markitdown.sh` to perform the conversion.
+
+### Installation
+
+Run the install-skill target:
+
+```bash
+make install-skill
+```
+
+It will prompt for the skills directory, defaulting to `~/.claude/skills`. Press Enter to accept
+the default or type a custom path:
+
+```
+Skills directory [/home/you/.claude/skills]:
+Skill installed to /home/you/.claude/skills/convert-documents-to-markdown/
+```
+
+Claude Code picks up skills from `~/.claude/skills/` automatically — no further configuration
+required.
+
+### Skill location
+
+```
+skills/
+  convert-documents-to-markdown/
+    SKILL.md
+```
 
 ---
 
