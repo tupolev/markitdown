@@ -42,29 +42,19 @@ for details. Skip this step if you don't need OCR.
 ### 3. Build the image
 
 ```bash
-docker compose build
-```
-
-Or with plain Docker:
-
-```bash
-docker build -t markitdown .
+make install
 ```
 
 To build from a specific upstream tag or branch instead of `main`:
 
 ```bash
 docker compose build --build-arg MARKITDOWN_REF=v0.1.5
-# or
-docker build --build-arg MARKITDOWN_REF=v0.1.5 -t markitdown .
 ```
 
 ### 4. Verify the installation
 
 ```bash
-docker compose run --rm markitdown --help
-# or
-docker run --rm markitdown --help
+./markitdown.sh --help
 ```
 
 ---
@@ -117,32 +107,34 @@ environment:
 
 ## Usage
 
-All examples below use `docker compose run --rm`. You can substitute `docker run --rm -v "$(pwd):/data"`
-for any of them if you prefer plain Docker.
+All examples below use `./markitdown.sh`. The script is a thin wrapper around
+`docker compose run --rm markitdown` and forwards all arguments unchanged.
 
 ### Show help
 
 ```bash
-docker compose run --rm markitdown --help
+./markitdown.sh --help
 ```
 
 ### Convert a file — output to stdout
 
 ```bash
-docker compose run --rm markitdown /data/input.pdf
+./markitdown.sh /data/input.pdf
 ```
 
 Redirect to a local file:
 
 ```bash
-docker compose run --rm markitdown /data/input.pdf > output.md
+./markitdown.sh /data/input.pdf > output.md
 ```
 
-### Convert a file — write output file inside the container
+### Convert a file — write output file
 
 ```bash
-docker compose run --rm markitdown /data/input.pdf -o /data/output.md
+./markitdown.sh /data/input.pdf -o /data/output.md
 ```
+
+The output file will inherit the ownership and permissions of the input file automatically.
 
 ### Pipe content into the container
 
@@ -153,13 +145,13 @@ cat input.pdf | docker compose run --rm -T markitdown > output.md
 ### Convert a URL
 
 ```bash
-docker compose run --rm markitdown https://example.com/page > output.md
+./markitdown.sh https://example.com/page > output.md
 ```
 
 ### Convert a YouTube video (fetches transcript)
 
 ```bash
-docker compose run --rm markitdown https://www.youtube.com/watch?v=VIDEO_ID > output.md
+./markitdown.sh https://www.youtube.com/watch?v=VIDEO_ID > output.md
 ```
 
 ### Convert with Azure Document Intelligence
@@ -168,13 +160,13 @@ Requires an [Azure Document Intelligence](https://learn.microsoft.com/azure/ai-s
 resource endpoint:
 
 ```bash
-docker compose run --rm markitdown /data/input.pdf -d -e "https://your-resource.cognitiveservices.azure.com/"
+./markitdown.sh /data/input.pdf -d -e "https://your-resource.cognitiveservices.azure.com/"
 ```
 
 ### List installed plugins
 
 ```bash
-docker compose run --rm markitdown --list-plugins
+./markitdown.sh --list-plugins
 ```
 
 ---
